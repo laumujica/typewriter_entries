@@ -20,7 +20,6 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
 
 // Reference to your entries in the database
 var entriesRef = firebase.database().ref("entries");
@@ -28,15 +27,16 @@ var entriesRef = firebase.database().ref("entries");
 // Fetch the entries
 entriesRef.on("value", function (snapshot) {
   var entries = snapshot.val();
-  // Process the entries and display them on your website
-  // You can update your displayEntries() function accordingly
   displayEntries(entries);
 });
 
 document.addEventListener("DOMContentLoaded", function () {
   // Call displayEntries here
-  displayEntries(entries);
+  displayEntries();
 });
+
+// Establecer una referencia a la base de datos de Firebase
+const database = firebase.database();
 
 /* No sé si esto romperá algo */
 function displayEntries(entries) {
@@ -49,7 +49,7 @@ function displayEntries(entries) {
     entryItem.textContent = entry.title;
     entryItem.addEventListener("click", function () {
       // Display the entry details in the modal
-      openModal(entry.title, entry.text);
+      openModal(entry.title, entry.content);
     });
     entriesList.appendChild(entryItem);
   }
