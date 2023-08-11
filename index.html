@@ -22,12 +22,15 @@
 
   <body>
     <div class="paper">
-        <h2 class="entry-title" contenteditable="true" id="new-title">Nueva entrada</h2>
+      <h2 class="entry-title" contenteditable="true" id="new-title">
+        Nueva entrada
+      </h2>
 
-        <div class="typed-text" contenteditable="true"
-        id="new-text">Escriba su texto aquí</div>
-        <button class="save-button">Guardar Entrada</button>
+      <div class="typed-text" contenteditable="true" id="new-text">
+        Escriba su texto aquí
       </div>
+      <button class="save-button">Guardar Entrada</button>
+    </div>
 
     <div class="sidebar">
       <h2>Entradas Guardadas</h2>
@@ -42,6 +45,14 @@
       </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/8.0/firebase.js"></script>
+    <script>
+      var config = {
+        apiKey: "AIzaSyCX6yqmOzw34lvST1DjWjCV3D0yUxFJHbg",
+        authDomain: "typewriter-entries.firebaseapp.com",
+      };
+      firebase.initializeApp(config);
+    </script>
     <script src="script.js"></script>
   </body>
 </html>
