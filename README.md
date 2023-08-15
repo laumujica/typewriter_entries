@@ -1,6 +1,6 @@
 # typewriter_entries
 
-Certainly! Here's a table with the requested information:
+Process log:
 
 | N° | Date          | Topic                                     | Description                                                                                        |
 |----|---------------|-------------------------------------------|----------------------------------------------------------------------------------------------------|
@@ -15,4 +15,7 @@ Certainly! Here's a table with the requested information:
 | 9  | August 7, 2023 | Additional Features                     | Incorporating additional features, including handling click events and fixing issues.               |
 | 10 | August 7, 2023 | Validation and Error Handling           | Implementing validation to prevent saving entries without content. Adding error handling for better user feedback. |
 
-Feel free to use this table as a reference to track the topics we've covered in our conversation. If you have any more questions or need further assistance, feel free to ask!
+What I want to modify next - Backlog:
+- Modal content: fixed alignment
+- CSS Styling (saved for last)
+- Add Bold text to the title printed on PDF
