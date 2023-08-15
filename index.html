@@ -22,11 +22,21 @@
 
   <body>
     <div class="paper">
-      <h2 class="entry-title" contenteditable="true" id="new-title">
+      <h2
+        class="entry-title"
+        contenteditable="true"
+        id="new-title"
+        placeholder="Título"
+      >
         Nueva entrada
       </h2>
 
-      <div class="typed-text" contenteditable="true" id="new-text">
+      <div
+        class="typed-text"
+        contenteditable="true"
+        id="new-text"
+        placeholder="Escriba su texto aquí"
+      >
         Escriba su texto aquí
       </div>
       <button class="save-button">Guardar Entrada</button>
@@ -34,17 +44,21 @@
 
     <div class="sidebar">
       <h2>Entradas Guardadas</h2>
-      <ul class="saved-list"></ul>
+      <ul class="saved-list" id="saved-list"></ul>
     </div>
 
     <div class="modal-overlay">
-      <div class="modal">
+      <div class="modal" id="txt">
         <h2 class="modal-title"></h2>
         <div class="modal-content"></div>
+        <a href="javascript:void(0);" onclick="genPDF()">Crear pdf</a>
         <button class="modal-close">Cerrar</button>
       </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- JS -->
+    <script type="text/javascript" src="/js/jspdf.min.js"></script>
+    <script type="text/javascript" src="/js/pdfGenerator.js"></script>
+    <script type="text/javascript" src="/js/script.js"></script>
   </body>
 </html>
