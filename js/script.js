@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   document.addEventListener("DOMContentLoaded", function () {
-    // Call displayEntries here
     displayEntries();
   });
 
@@ -49,8 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var entryItem = document.createElement("li");
       entryItem.textContent = entry.title;
       entryItem.addEventListener("click", function () {
-        // Display the entry details in the modal
-        openModal(entry.title, entry.content);
+        openModal(entry.title, entry.content, entry.creationDate);
       });
       entriesList.appendChild(entryItem);
     }
@@ -59,14 +57,14 @@ document.addEventListener("DOMContentLoaded", function () {
   /* Acá empieza todo creo - estos son los segundos, dsp de la 1ra entrada */
   entryTitle.addEventListener("click", () => {
     const titleElement = document.getElementById("new-title");
-    if (titleElement.textContent = "Nueva entrada") {
+    if ((titleElement.textContent = "Nueva entrada")) {
       titleElement.textContent = "";
     }
   });
 
   typedText.addEventListener("click", () => {
     const typedText = document.getElementById("new-text");
-    if (typedText.textContent = "Escriba su texto aquí") {
+    if ((typedText.textContent = "Escriba su texto aquí")) {
       typedText.textContent = "";
     }
   });
@@ -77,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (content.trim() !== "" && title.trim() !== "" && title !== "Título") {
       const id = `escrito_${Date.now()}`;
-
+  
       const entryData = {
         title: title,
         content: content,
@@ -105,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
           typedText.textContent = "Escriba su texto aquí";
           entryTitle.textContent = "Nueva entrada";
         })
+
         .catch((error) => {
           console.error("Error al guardar la entrada: ", error);
         });
