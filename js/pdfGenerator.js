@@ -2,15 +2,15 @@ function genPDF() {
   var doc = new jsPDF();
   let modalTitle = document.querySelector(".modal-title");
   let modalContent = document.querySelector(".modal-content");
-  let modalCreationDate = document.querySelector(".modal-creation-date");
 
   const title = modalTitle.textContent;
   const content = modalContent.textContent;
-  const creationDate = modalCreationDate.textContent;
 
+  doc.setFont("helvetica", "bold");
   doc.text(20, 20, title);
+
+  doc.setFont("helvetica", "normal");
   doc.text(20, 30, content);
-  doc.text(20, 40, creationDate);
 
   // Get current date in ddmmaa format
   const currentDate = new Date();
