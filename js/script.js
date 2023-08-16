@@ -16,10 +16,10 @@ document.addEventListener("DOMContentLoaded", function () {
     projectId: "typewriter-entries",
     storageBucket: "typewriter-entries.appspot.com",
     messagingSenderId: "658456453344",
-    appId: "1:658456453344:web:6040ebce270daf7248f085",
-    measurementId: "G-BZTXEJPM9M",
+    appId: "1:658456453344:web:2bc32cd9c9cd204048f085",
+    measurementId: "G-P7S4WZ33MB",
   };
-
+  
   firebase.initializeApp(firebaseConfig);
 
   // Reference to your entries in the database
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (content.trim() !== "" && title.trim() !== "" && title !== "Título") {
       const id = `escrito_${Date.now()}`;
-  
+
       const entryData = {
         title: title,
         content: content,
