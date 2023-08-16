@@ -4,29 +4,30 @@
   box-sizing: border-box;
 }
 
-a {
+/* a {
   color: inherit;
-}
+} */
 
 body {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  /* background-color: #888888; */
+  background-color: #888888;
   /*   font-family: "Courier New", monospace; */
   /*   font-family: "Cutive Mono", monospace; */
-  background: #485563; /* fallback for old browsers */
+
+/*   background: #485563; 
   background: -webkit-linear-gradient(
     to top,
     #29323c,
     #485563
-  ); /* Chrome 10-25, Safari 5.1-6 */
+  ); 
   background: linear-gradient(
     to top,
     #29323c,
     #485563
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  );  */
 
   font-family: "Special Elite", cursive;
 }
@@ -41,9 +42,9 @@ body {
   margin: 20px;
 }
 
-.saved-entries {
+/* .saved-entries {
   color: #f4f4f4;
-}
+} */
 
 .typed-text {
   font-size: 1.5rem;

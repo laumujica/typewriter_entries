@@ -55,14 +55,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* Acá empieza todo creo - estos son los segundos, dsp de la 1ra entrada */
-  entryTitle.addEventListener("click", () => {
+  entryTitle.addEventListener("focus", () => {
     const titleElement = document.getElementById("new-title");
     if ((titleElement.textContent = "Nueva entrada")) {
       titleElement.textContent = "";
     }
   });
 
-  typedText.addEventListener("click", () => {
+  typedText.addEventListener("focus", () => {
     const typedText = document.getElementById("new-text");
     if ((typedText.textContent = "Escriba su texto aquí")) {
       typedText.textContent = "";
