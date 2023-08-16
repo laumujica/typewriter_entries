@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Reference to your entries in the database
   var entriesRef = firebase.database().ref("entries");
-  const database = firebase.database();
 
   // Fetch the entries
   entriesRef.on("value", function (snapshot) {
@@ -35,6 +34,9 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("DOMContentLoaded", function () {
     displayEntries();
   });
+
+  // Establecer una referencia a la base de datos de Firebase
+  const database = firebase.database();
 
   /* No sé si esto romperá algo */
   function displayEntries(entries) {
@@ -53,14 +55,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* Acá empieza todo creo - estos son los segundos, dsp de la 1ra entrada */
-  entryTitle.addEventListener("focus", () => {
+  entryTitle.addEventListener("click", () => {
     const titleElement = document.getElementById("new-title");
     if ((titleElement.textContent = "Nueva entrada")) {
       titleElement.textContent = "";
     }
   });
 
-  typedText.addEventListener("focus", () => {
+  typedText.addEventListener("click", () => {
     const typedText = document.getElementById("new-text");
     if ((typedText.textContent = "Escriba su texto aquí")) {
       typedText.textContent = "";

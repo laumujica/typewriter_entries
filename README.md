@@ -1,6 +1,6 @@
 # typewriter_entries
 
-Process log:
+Process log, the dates are wrong, check that out:
 
 | N° | Date          | Topic                                     | Description                                                                                        |
 |----|---------------|-------------------------------------------|----------------------------------------------------------------------------------------------------|
@@ -18,4 +18,9 @@ Process log:
 What I want to modify next - Backlog:
 - Modal content: fixed alignment
 - CSS Styling (saved for last)
-- Add Bold text to the title printed on PDF
+- Add Bold text to the title printed on PDF -DONE
+- Generate better buttons
+
+"Para generar el CSS me gustaría hacer unas pruebas de UX y ver ese tipo de cosas antes de arrancar con mejoras de UI"
+Última actualización:
+15.08.23 - 11:43pm
