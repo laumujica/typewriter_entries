@@ -52,12 +52,10 @@ body {
 
 .entry-title.empty::before {
   content: attr(data-placeholder);
-  color: #999;
 }
 
 .typed-text.empty::before {
   content: attr(data-placeholder);
-  color: #999;
 }
 
 .typed-text {

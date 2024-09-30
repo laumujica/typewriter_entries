@@ -10,14 +10,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize Firebase!
   const firebaseConfig = {
-      apiKey: "AIzaSyCX6yqmOzw34lvST1DjWjCV3D0yUxFJHbg",
-      authDomain: "typewriter-entries.firebaseapp.com",
-      databaseURL: "https://typewriter-entries-default-rtdb.firebaseio.com",
-      projectId: "typewriter-entries",
-      storageBucket: "typewriter-entries.appspot.com",
-      messagingSenderId: "658456453344",
-      appId: "1:658456453344:web:2bc32cd9c9cd204048f085",
-      measurementId: "G-P7S4WZ33MB",
+    apiKey: "AIzaSyCX6yqmOzw34lvST1DjWjCV3D0yUxFJHbg",
+    authDomain: "typewriter-entries.firebaseapp.com",
+    databaseURL: "https://typewriter-entries-default-rtdb.firebaseio.com",
+    projectId: "typewriter-entries",
+    storageBucket: "typewriter-entries.appspot.com",
+    messagingSenderId: "658456453344",
+    appId: "1:658456453344:web:2bc32cd9c9cd204048f085",
+    measurementId: "G-P7S4WZ33MB",
   };
 
   firebase.initializeApp(firebaseConfig);
@@ -27,123 +27,120 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Fetch the entries
   entriesRef.on("value", function (snapshot) {
-      var entries = snapshot.val();
-      displayEntries(entries);
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-      displayEntries();
+    var entries = snapshot.val();
+    displayEntries(entries);
   });
 
   // Establecer una referencia a la base de datos de Firebase
   const database = firebase.database();
 
   function displayEntries(entries) {
-      var entriesList = document.querySelector(".saved-list");
-      entriesList.innerHTML = ""; // Clear existing entries
+    var entriesList = document.querySelector(".saved-list");
+    entriesList.innerHTML = ""; // Clear existing entries
 
+    if (entries) {
+      // Asegúrate de que las entradas no sean nulas
       for (var key in entries) {
-          var entry = entries[key];
-          var entryItem = document.createElement("li");
-          entryItem.textContent = entry.title;
-          entryItem.addEventListener("click", function () {
-              openModal(entry.title, entry.content, entry.creationDate);
-          });
-          entriesList.appendChild(entryItem);
+        var entry = entries[key];
+        var entryItem = document.createElement("li");
+        entryItem.textContent = entry.title;
+        entryItem.addEventListener("click", function () {
+          openModal(entry.title, entry.content, entry.creationDate);
+        });
+        entriesList.appendChild(entryItem);
       }
+    }
   }
 
-  // Inicializar los campos editable
+  // Inicializar los campos editables
   entryTitle.addEventListener("focus", () => {
-      const titleElement = document.getElementById("new-title");
-      if (titleElement.textContent === "Nueva entrada") {
-          titleElement.textContent = "";
-      }
+    const titleElement = document.getElementById("new-title");
+    if (titleElement.textContent === "Nueva entrada") {
+      titleElement.textContent = "";
+    }
   });
 
   typedText.addEventListener("focus", () => {
-      const typedText = document.getElementById("new-text");
-      if (typedText.textContent === "Escriba su texto aquí") {
-          typedText.textContent = "";
-      }
+    const typedText = document.getElementById("new-text");
+    if (typedText.textContent === "Escriba su texto aquí") {
+      typedText.textContent = "";
+    }
   });
 
   saveButton.addEventListener("click", () => {
-      const content = typedText.textContent;
-      const title = entryTitle.textContent;
+    const content = typedText.textContent;
+    const title = entryTitle.textContent;
 
-      if (content.trim() !== "" && title.trim() !== "" && title !== "Título") {
-          const id = `escrito_${Date.now()}`;
+    if (content.trim() !== "" && title.trim() !== "" && title !== "Título") {
+      const id = `escrito_${Date.now()}`;
 
-          const entryData = {
-              title: title,
-              content: content,
-          };
+      const entryData = {
+        title: title,
+        content: content,
+      };
 
-          database
-              .ref("entradas/" + id)
-              .set(entryData)
-              .then(() => {
-                  const listItem = document.createElement("li");
-                  const link = document.createElement("a");
+      database
+        .ref("entradas/" + id)
+        .set(entryData)
+        .then(() => {
+          const listItem = document.createElement("li");
+          const link = document.createElement("a");
 
-                  link.textContent = title;
-                  link.href = "#" + id;
-                  link.addEventListener("click", (event) => {
-                      event.preventDefault();
-                      openModal(title, content);
-                  });
+          link.textContent = title;
+          link.href = "#" + id;
+          link.addEventListener("click", (event) => {
+            event.preventDefault();
+            openModal(title, content);
+          });
 
-                  listItem.appendChild(link);
-                  savedList.appendChild(listItem);
+          listItem.appendChild(link);
+          savedList.appendChild(listItem);
 
-                  typedText.textContent = "Escriba su texto aquí";
-                  entryTitle.textContent = "Nueva entrada";
-              })
-              .catch((error) => {
-                  console.error("Error al guardar la entrada: ", error);
-              });
-      }
+          typedText.textContent = "Escriba su texto aquí";
+          entryTitle.textContent = "Nueva entrada";
+        })
+        .catch((error) => {
+          console.error("Error al guardar la entrada: ", error);
+        });
+    }
   });
 
   modalClose.addEventListener("click", () => {
-      modal.style.display = "none";
+    modal.style.display = "none";
   });
 
   modal.addEventListener("click", (event) => {
-      if (event.target === modal) {
-          modal.style.display = "none";
-      }
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
   });
 
   function openModal(title, content) {
-      modalTitle.textContent = title;
-      modalContent.textContent = content;
-      modal.style.display = "block";
+    modalTitle.textContent = title;
+    modalContent.textContent = content;
+    modal.style.display = "block";
   }
 
   function genPDF() {
-      const title = modalTitle.textContent; // Obtener el título de la entrada
-      const content = modalContent.textContent; // Obtener el contenido de la entrada
-      const creationDate = new Date(); // Obtener la fecha actual
-      const formattedDate = `${creationDate.getMonth() + 1}${creationDate.getDate()}${creationDate.getFullYear()}_${creationDate.getHours()}${creationDate.getMinutes()}`;
-      
-      // Formatear el nombre del archivo
-      const fileName = `${title.replace(/\s+/g, '_').toLowerCase()}_${formattedDate}.pdf`;
+    const title = modalTitle.textContent; // Obtener el título de la entrada
+    const content = modalContent.textContent; // Obtener el contenido de la entrada
+    const creationDate = new Date(); // Obtener la fecha actual
+    const formattedDate = `${
+      creationDate.getMonth() + 1
+    }${creationDate.getDate()}${creationDate.getFullYear()}_${creationDate.getHours()}${creationDate.getMinutes()}`;
 
-      const doc = new jsPDF();
-      
-      doc.setFont("times", "normal");
-      doc.setFontSize(12);
+    // Formatear el nombre del archivo
+    const fileName = `${title
+      .replace(/\s+/g, "_")
+      .toLowerCase()}_${formattedDate}.pdf`;
 
-      // Añadir el título y el contenido al PDF
-      doc.text(title, 10, 10);
-      doc.text(content, 10, 20);
+    const doc = new jsPDF();
 
-      // Guardar el PDF con el nombre formateado
-      doc.save(fileName);
+    // Añadir el título y el contenido al PDF
+    doc.text(title, 10, 10);
+    doc.text(content, 10, 20);
   }
-  
+
   // Suponiendo que tienes un botón para generar el PDF
   const pdfButton = document.querySelector(".pdf-button");
   pdfButton.addEventListener("click", genPDF);
