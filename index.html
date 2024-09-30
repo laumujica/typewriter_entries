@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="img/favicon.png" type="image/x-icon" />
+    <title>Máquina de Escribir</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Special+Elite&display=swap" rel="stylesheet" />
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div class="paper">
+        <h2 class="entry-title" contenteditable="true" id="new-title" placeholder="Título">Nueva entrada</h2>
+        <div class="typed-text" contenteditable="true" id="new-text" placeholder="Escriba su texto aquí">Escriba su texto aquí</div>
+        <button class="save-button">Guardar Entrada</button>
+    </div>
+
+    <div class="sidebar">
+        <h2 class="saved-entries">Entradas Guardadas</h2>
+        <ul class="saved-list" id="saved-list"></ul>
+    </div>
+
+    <div class="modal-overlay">
+        <div class="modal" id="txt">
+          <img class="typewriter_img" src="/img/typewriter_img.jpg" alt="máquina de escribir">
+            <h2 class="modal-title"></h2>
+            <div class="modal-content"></div>
+            <p class="modal-creation-date"></p>
+            <a class="pdf_button" href="javascript:void(0);" onclick="genPDF()">Crear pdf</a>
+            <br>
+            <br>
+            <button class="modal-close">Cerrar</button>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/jspdf.min.js"></script>
+    <script type="text/javascript" src="js/pdfGenerator.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+</body>
+</html>
