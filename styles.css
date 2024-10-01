@@ -115,3 +115,53 @@ li {
   margin-top: 20px;
   margin-bottom: 10px;
 }
+
+/* @media screen and (max-width: 768px) {
+  .paper {
+    width: 95%;
+    padding: 15px;
+    margin: 10px;
+  }
+
+  .typed-text {
+    font-size: 1.2rem;
+    min-height: 200px;
+  }
+
+  .modal {
+    width: 90%;
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  .modal-content {
+    font-size: 14px;
+  }
+
+  .typewriter_img {
+    width: 8rem;
+  }
+} */
+
+@media screen and (max-width: 768px) {
+  .paper {
+    display: flex;
+    flex-direction: column; /* Asegúrate de que los elementos estén en columna */
+    width: 95%;
+    padding: 15px;
+    margin: 10px auto; /* Centra el cuadro */
+  }
+
+  .typed-text {
+    font-size: 1.2rem;
+    min-height: 200px;
+    margin-bottom: 10px; /* Espacio entre el cuadro de texto y las entradas */
+  }
+
+  .saved-list {
+    list-style: none; /* Elimina los estilos de lista */
+    padding: 0; /* Elimina padding por defecto */
+    margin-top: 20px; /* Espacio arriba de la lista */
+  }
+}
+
