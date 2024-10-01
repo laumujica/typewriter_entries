@@ -4,31 +4,12 @@
   box-sizing: border-box;
 }
 
-/* a {
-  color: inherit;
-} */
-
 body {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   background-color: #888888;
-  /*   font-family: "Courier New", monospace; */
-  /*   font-family: "Cutive Mono", monospace; */
-
-  /*   background: #485563; 
-  background: -webkit-linear-gradient(
-    to top,
-    #29323c,
-    #485563
-  ); 
-  background: linear-gradient(
-    to top,
-    #29323c,
-    #485563
-  );  */
-
   font-family: "Special Elite", cursive;
 }
 
@@ -40,14 +21,6 @@ body {
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   margin: 20px;
-}
-
-/* .saved-entries {
-  color: #f4f4f4;
-} */
-
-.placeholder {
-  color: #585858;
 }
 
 .entry-title.empty::before {

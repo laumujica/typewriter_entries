@@ -25,18 +25,18 @@ document.addEventListener("DOMContentLoaded", function () {
   // Reference to your entries in the database
   var entriesRef = firebase.database().ref("entries");
 
-  // Fetch the entries
+/*   // Fetch the entries
   entriesRef.on("value", function (snapshot) {
     var entries = snapshot.val();
     displayEntries(entries);
   });
-
+ */
   // Establecer una referencia a la base de datos de Firebase
   const database = firebase.database();
 
   function displayEntries(entries) {
     var entriesList = document.querySelector(".saved-list");
-    entriesList.innerHTML = ""; // Clear existing entries
+    entriesList.innerHTML = ""; // Aquí es donde se limpian las entradas viejas
 
     if (entries) {
       // Asegúrate de que las entradas no sean nulas
