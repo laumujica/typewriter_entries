@@ -169,7 +169,7 @@ button:disabled { opacity: 0.6; cursor: wait; }
 .modal-content a,
 .modal-content li { color: #555; }
 
-@media (max-width: 820px) {
+@media (max-width: 640px) {
   body { display: block; padding: 16px; }
   .paper { min-height: min(680px, 72dvh); }
   .typed-text { min-height: 42dvh; }
