@@ -16,19 +16,20 @@ This is an experimental MVP, not a commercial product. I return to it as I learn
 
 I designed the writing flow and visual direction, then built the interface in HTML, CSS, and JavaScript. The first version connected to Firebase Realtime Database and generated downloadable PDFs in the browser with jsPDF. In 2026 I revisited the implementation to restore the save and export flow, preserve the original project history, and make the storage state visible to writers.
 
-The app is hosted as a static site on GitHub Pages. It does not currently have accounts. Entries are saved in this browser's local storage and are **not synced to other devices**. The app states which storage is in use. Entries saved locally remain local if cloud storage is added; automatic synchronization is not implemented.
+The app is hosted as a static site on GitHub Pages. It does not show a sign-in screen. Entries are saved in this browser's local storage and are **not synced to other devices**. The app states which storage is in use. Entries saved locally remain local if cloud storage is added; automatic synchronization is not implemented.
 
 ## Current technical status
 
 The original Firebase Realtime Database was deactivated. Historical entries are not being migrated. The site now runs locally in the browser and no longer contacts the old project. A fresh Firebase project can be attached without changing the GitHub Pages hosting.
 
-To connect a new project, create a Firebase Web app and Realtime Database, then replace `null` in `js/firebase-config.js` with its Web app configuration including `databaseURL`. The new data path is `entries`. Define access rules appropriate for personal writing before enabling cloud storage; the Web app configuration is public and does not protect the data. Local storage is specific to each browser and can be removed by clearing site data. Do not rely on it as the sole copy of irreplaceable writing; download a PDF.
+To connect a Firebase project, enable Realtime Database and the Anonymous provider in Firebase Authentication, then replace `null` in `js/firebase-config.js` with its Web app configuration including `databaseURL`. Publish the rules in `database.rules.json` before letting the site use the database. Cloud entries live under `entries/<anonymous user ID>`, so each browser sees only its own entries without a visible sign-in screen. The Web app configuration is public and does not protect the data; the database rules do. Anonymous access is tied to that browser's Firebase identity, so clearing browser data can make cloud entries inaccessible. Local storage is also specific to each browser and can be removed by clearing site data. Download a PDF for an independent copy of important writing.
 
 ## Project files
 
 - `index.html`, `styles.css`: writing interface and responsive layout.
 - `js/script.js`: editor behavior, entry list, local storage, and optional Firebase connection.
 - `js/firebase-config.js`: placeholder for the new project's public Web app configuration.
+- `database.rules.json`: per-user Realtime Database rules to publish in Firebase Console.
 - `js/pdfGenerator.js`: dated, multipage A4 PDF export.
 - `fonts/`: bundled Special Elite font and its Apache 2.0 license. The bundled jsPDF 2.5.2 has its MIT license in `js/jspdf-LICENSE.txt`.
 - [Original 2023 process log](docs/archive/README-2023.md): preserved verbatim, including its own note that some dates are incorrect.

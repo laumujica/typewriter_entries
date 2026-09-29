@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let entriesRef;
   let cloudAvailable = false;
   let selectedEntry;
+  let activeUid = null;
 
   try {
     localEntries = JSON.parse(localStorage.getItem(localKey) || "{}") || {};
@@ -147,16 +148,33 @@ document.addEventListener("DOMContentLoaded", () => {
   }, 6000);
   try {
     firebase.initializeApp(firebaseConfig);
-    entriesRef = firebase.database().ref("entries");
-    entriesRef.on("value", (snapshot) => {
-      remoteEntries = snapshot.val() || {};
-      cloudAvailable = true;
-      renderEntries();
-      setStatus("Firebase connected. Entries are also saved in this browser.");
-    }, (error) => {
+    const auth = firebase.auth();
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        cloudAvailable = false;
+        auth.signInAnonymously().catch((error) => {
+          console.warn("Anonymous Firebase sign-in failed", error);
+          setStatus("Cloud storage is unavailable. Entries are saved only in this browser.");
+        });
+        return;
+      }
+      if (activeUid === user.uid) return;
+      if (entriesRef) entriesRef.off();
+      activeUid = user.uid;
       cloudAvailable = false;
-      console.warn("Firebase is unavailable", error);
-      setStatus("Firebase is unavailable. Entries are saved only in this browser.");
+      remoteEntries = {};
+      renderEntries();
+      entriesRef = firebase.database().ref(`entries/${user.uid}`);
+      entriesRef.on("value", (snapshot) => {
+        remoteEntries = snapshot.val() || {};
+        cloudAvailable = true;
+        renderEntries();
+        setStatus("Cloud storage connected. Entries are also saved in this browser.");
+      }, (error) => {
+        cloudAvailable = false;
+        console.warn("Cloud storage is unavailable", error);
+        setStatus("Cloud storage is unavailable. Entries are saved only in this browser.");
+      });
     });
   } catch (error) {
     console.warn("Could not initialize Firebase", error);

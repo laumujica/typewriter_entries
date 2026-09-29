@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "entries": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid",
+        "$entryId": {
+          ".validate": "newData.hasChildren(['title', 'content', 'createdAt'])",
+          "title": { ".validate": "newData.isString()" },
+          "content": { ".validate": "newData.isString()" },
+          "createdAt": { ".validate": "newData.isString()" },
+          "$other": { ".validate": false }
+        }
+      }
+    }
+  }
+}
