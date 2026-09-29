@@ -59,6 +59,11 @@ button { font-family: inherit; }
   pointer-events: none;
 }
 
+.entry-title[data-empty="true"]:focus::before,
+.typed-text[data-empty="true"]:focus::before {
+  color: #888;
+}
+
 .save-button,
 .pdf-button,
 .modal-close {
