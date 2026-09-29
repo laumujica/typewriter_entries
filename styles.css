@@ -35,8 +35,16 @@ button { font-family: inherit; }
   box-shadow: 0 2px 14px rgb(0 0 0 / 22%);
 }
 
+.field-label {
+  margin: 0 0 8px;
+  color: #333;
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
 .entry-title {
-  margin: 0 0 10px;
+  min-height: 2.2rem;
+  margin: 0 0 24px;
   font-size: 1.5rem;
   line-height: 1.4;
   overflow-wrap: anywhere;
@@ -50,13 +58,6 @@ button { font-family: inherit; }
   font-size: 1.5rem;
   line-height: 1.6;
   outline: none;
-}
-
-.entry-title[data-empty="true"]::before,
-.typed-text[data-empty="true"]::before {
-  content: attr(data-placeholder);
-  color: #777;
-  pointer-events: none;
 }
 
 .entry-title:focus-visible,
