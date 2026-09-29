@@ -1,6 +1,6 @@
-# Typewriter Entries
+![Typewriter Entries — A quiet place to write.](img/typewriter_entries_banner.png)
 
-A quiet place to write. [Try the prototype](https://laumujica.github.io/typewriter_entries/).
+[Try the prototype](https://laumujica.github.io/typewriter_entries/).
 
 I started Typewriter Entries on **August 11, 2023**, inspired by writing and by the idea of a digital space devoted to a single task. The interface offers a title, a generous writing area, and a list of saved entries. There are no settings for fonts, sizes, or page layout: writing comes first, and editing can happen later.
 
@@ -9,6 +9,10 @@ I started Typewriter Entries on **August 11, 2023**, inspired by writing and by 
 1. Write a title and a text. The unfinished draft is saved automatically in this browser as you type, so you can return to it after accidentally closing the page.
 2. Select **Save entry** to add it to **Saved entries**.
 3. Open an entry and download a multipage A4 PDF named after its title, with the export date and the same Special Elite typeface as the editor.
+
+![Typewriter Entries writing interface, September 2026](img/screenshot_mvp_sep26.png)
+
+*Current MVP interface, September 2026.*
 
 This is an experimental MVP. Entries and drafts can be lost if browser site data is cleared, so download a PDF to keep a copy of writing that matters.
 
