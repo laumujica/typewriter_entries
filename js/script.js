@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let cloudAvailable = false;
   let selectedEntry;
   let activeUid = null;
+  let statusTimer;
 
   try {
     localEntries = JSON.parse(localStorage.getItem(localKey) || "{}") || {};
@@ -20,7 +21,18 @@ document.addEventListener("DOMContentLoaded", () => {
     console.warn("Could not recover local entries", error);
   }
 
-  const setStatus = (message) => { status.textContent = message; };
+  const setStatus = (message, temporary = false) => {
+    clearTimeout(statusTimer);
+    status.classList.remove("is-transient");
+    status.textContent = message;
+    if (temporary && message) {
+      status.classList.add("is-transient");
+      statusTimer = setTimeout(() => {
+        status.classList.remove("is-transient");
+        status.textContent = "";
+      }, 3000);
+    }
+  };
   const updatePlaceholder = (field) => {
     field.dataset.empty = String(!field.textContent.trim());
   };
@@ -29,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (draft && (typeof draft.title === "string" || typeof draft.content === "string")) {
       titleField.textContent = typeof draft.title === "string" ? draft.title : "";
       textField.textContent = typeof draft.content === "string" ? draft.content : "";
-      setStatus("Draft restored from this browser.");
     }
   } catch (error) {
     console.warn("Could not recover draft", error);
@@ -45,11 +56,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const content = textField.innerText;
       if (title.trim() || content.trim()) {
         localStorage.setItem(draftKey, JSON.stringify({ title, content }));
-        setStatus("Draft saved automatically in this browser.");
       } else {
         localStorage.removeItem(draftKey);
-        setStatus("");
       }
+      if (status.textContent) setStatus("");
     } catch (error) {
       console.error("Could not save draft", error);
       setStatus("Draft could not be saved automatically. Copy your text before closing.");
@@ -100,9 +110,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (cloudAvailable && entriesRef) {
         await entriesRef.child(id).set(entry);
         saveLocal(id, entry);
-        setStatus("Entry saved.");
+        setStatus("Entry saved.", true);
       } else if (saveLocal(id, entry)) {
-        setStatus("Entry saved in this browser. Download a PDF to keep a copy.");
+        setStatus("Cloud unavailable. Entry saved in this browser; download a PDF.");
       } else {
         setStatus("Could not save. Copy your text before closing this page.");
         return;
@@ -115,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (saveLocal(id, entry)) {
         renderEntries();
         clearSavedDraft(title, content);
-        setStatus("Entry saved in this browser. Download a PDF to keep a copy.");
+        setStatus("Cloud unavailable. Entry saved in this browser; download a PDF.");
       } else {
         setStatus("Could not save. Copy your text before closing this page.");
       }
