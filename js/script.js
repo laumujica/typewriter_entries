@@ -21,6 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const setStatus = (message) => { status.textContent = message; };
+  const updatePlaceholder = (field) => {
+    field.dataset.empty = String(!field.textContent.trim());
+  };
   try {
     const draft = JSON.parse(localStorage.getItem(draftKey) || "null");
     if (draft && (typeof draft.title === "string" || typeof draft.content === "string")) {
@@ -31,7 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
   } catch (error) {
     console.warn("Could not recover draft", error);
   }
+  updatePlaceholder(titleField);
+  updatePlaceholder(textField);
+
   function saveDraft() {
+    updatePlaceholder(titleField);
+    updatePlaceholder(textField);
     try {
       const title = titleField.innerText;
       const content = textField.innerText;
@@ -49,13 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   titleField.addEventListener("input", saveDraft);
   textField.addEventListener("input", saveDraft);
-  for (const field of document.querySelectorAll(".editor-field")) {
-    field.addEventListener("click", (event) => {
-      if (event.target === field || event.target.classList.contains("field-label")) {
-        field.querySelector('[contenteditable="true"]').focus();
-      }
-    });
-  }
 
   function saveLocal(id, entry) {
     try {
@@ -127,6 +128,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (titleField.innerText.trim() !== savedTitle || textField.innerText.trim() !== savedContent) return;
     titleField.textContent = "";
     textField.textContent = "";
+    updatePlaceholder(titleField);
+    updatePlaceholder(textField);
     try {
       localStorage.removeItem(draftKey);
     } catch (error) {
