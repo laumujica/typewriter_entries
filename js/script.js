@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const saveButton = document.querySelector(".save-button");
   const overlay = document.querySelector(".modal-overlay");
   const localKey = "typewriter-entries-v1";
-  const placeholders = [[titleField, "New entry"], [textField, "Start writing here"]];
+  const draftKey = "typewriter-draft-v1";
   let localEntries = {};
   let remoteEntries = {};
   let entriesRef;
@@ -21,6 +21,43 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const setStatus = (message) => { status.textContent = message; };
+  const updatePlaceholder = (field) => {
+    field.dataset.empty = String(!field.textContent.trim());
+  };
+  try {
+    const draft = JSON.parse(localStorage.getItem(draftKey) || "null");
+    if (draft && (typeof draft.title === "string" || typeof draft.content === "string")) {
+      titleField.textContent = typeof draft.title === "string" ? draft.title : "";
+      textField.textContent = typeof draft.content === "string" ? draft.content : "";
+      setStatus("Draft restored from this browser.");
+    }
+  } catch (error) {
+    console.warn("Could not recover draft", error);
+  }
+  updatePlaceholder(titleField);
+  updatePlaceholder(textField);
+
+  function saveDraft() {
+    updatePlaceholder(titleField);
+    updatePlaceholder(textField);
+    try {
+      const title = titleField.innerText;
+      const content = textField.innerText;
+      if (title.trim() || content.trim()) {
+        localStorage.setItem(draftKey, JSON.stringify({ title, content }));
+        setStatus("Draft saved automatically in this browser.");
+      } else {
+        localStorage.removeItem(draftKey);
+        setStatus("");
+      }
+    } catch (error) {
+      console.error("Could not save draft", error);
+      setStatus("Draft could not be saved automatically. Copy your text before closing.");
+    }
+  }
+  titleField.addEventListener("input", saveDraft);
+  textField.addEventListener("input", saveDraft);
+
   function saveLocal(id, entry) {
     try {
       localStorage.setItem(localKey, JSON.stringify({ ...localEntries, [id]: entry }));
@@ -49,19 +86,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  for (const [field, placeholder] of placeholders) {
-    field.addEventListener("focus", () => {
-      if (field.textContent.trim() === placeholder) field.textContent = "";
-    });
-    field.addEventListener("blur", () => {
-      if (!field.textContent.trim()) field.textContent = placeholder;
-    });
-  }
-
   async function saveEntry() {
     const title = titleField.innerText.trim();
     const content = textField.innerText.trim();
-    if (!title || !content || title === "New entry" || content === "Start writing here") {
+    if (!title || !content) {
       setStatus("Write a title and some text before saving.");
       return;
     }
@@ -72,29 +100,40 @@ document.addEventListener("DOMContentLoaded", () => {
       if (cloudAvailable && entriesRef) {
         await entriesRef.child(id).set(entry);
         saveLocal(id, entry);
-        setStatus("Entry saved to Firebase and this browser.");
+        setStatus("Entry saved.");
       } else if (saveLocal(id, entry)) {
-        setStatus("Cloud storage is not connected. Entry saved only in this browser.");
+        setStatus("Entry saved in this browser. Download a PDF to keep a copy.");
       } else {
         setStatus("Could not save. Copy your text before closing this page.");
         return;
       }
       renderEntries();
-      titleField.textContent = "New entry";
-      textField.textContent = "Start writing here";
+      clearSavedDraft(title, content);
     } catch (error) {
       console.error("Could not save to Firebase", error);
       cloudAvailable = false;
       if (saveLocal(id, entry)) {
         renderEntries();
-        titleField.textContent = "New entry";
-        textField.textContent = "Start writing here";
-        setStatus("Cloud storage is unavailable. Entry saved only in this browser.");
+        clearSavedDraft(title, content);
+        setStatus("Entry saved in this browser. Download a PDF to keep a copy.");
       } else {
         setStatus("Could not save. Copy your text before closing this page.");
       }
     } finally {
       saveButton.disabled = false;
+    }
+  }
+
+  function clearSavedDraft(savedTitle, savedContent) {
+    if (titleField.innerText.trim() !== savedTitle || textField.innerText.trim() !== savedContent) return;
+    titleField.textContent = "";
+    textField.textContent = "";
+    updatePlaceholder(titleField);
+    updatePlaceholder(textField);
+    try {
+      localStorage.removeItem(draftKey);
+    } catch (error) {
+      console.warn("Could not clear saved draft", error);
     }
   }
 
@@ -137,15 +176,8 @@ document.addEventListener("DOMContentLoaded", () => {
   renderEntries();
   const firebaseConfig = window.TYPEWRITER_FIREBASE_CONFIG;
   if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId || !firebaseConfig.databaseURL) {
-    setStatus("Cloud storage is not connected. Entries are saved only in this browser.");
     return;
   }
-  setStatus("Connecting to Firebase… Local entries are available.");
-  setTimeout(() => {
-    if (!cloudAvailable) {
-      setStatus("Firebase is unavailable. Entries are saved only in this browser.");
-    }
-  }, 6000);
   try {
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
@@ -154,7 +186,6 @@ document.addEventListener("DOMContentLoaded", () => {
         cloudAvailable = false;
         auth.signInAnonymously().catch((error) => {
           console.warn("Anonymous Firebase sign-in failed", error);
-          setStatus("Cloud storage is unavailable. Entries are saved only in this browser.");
         });
         return;
       }
@@ -169,15 +200,12 @@ document.addEventListener("DOMContentLoaded", () => {
         remoteEntries = snapshot.val() || {};
         cloudAvailable = true;
         renderEntries();
-        setStatus("Cloud storage connected. Entries are also saved in this browser.");
       }, (error) => {
         cloudAvailable = false;
         console.warn("Cloud storage is unavailable", error);
-        setStatus("Cloud storage is unavailable. Entries are saved only in this browser.");
       });
     });
   } catch (error) {
     console.warn("Could not initialize Firebase", error);
-    setStatus("Firebase is unavailable. Entries are saved only in this browser.");
   }
 });

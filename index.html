@@ -12,8 +12,8 @@
 </head>
 <body>
     <div class="paper">
-        <h2 class="entry-title" contenteditable="true" id="new-title" aria-label="Entry title">New entry</h2>
-        <div class="typed-text" contenteditable="true" id="new-text" role="textbox" aria-label="Entry text" aria-multiline="true">Start writing here</div>
+        <h2 class="entry-title" contenteditable="true" id="new-title" aria-label="Entry title" data-placeholder="New entry" data-empty="true"></h2>
+        <div class="typed-text" contenteditable="true" id="new-text" role="textbox" aria-label="Entry text" aria-multiline="true" data-placeholder="Start writing here" data-empty="true"></div>
         <button class="save-button" type="button">Save entry</button>
         <p id="save-status" role="status" aria-live="polite"></p>
     </div>
@@ -40,6 +40,6 @@
     <script type="text/javascript" src="js/jspdf.min.js?v=2.5.2"></script>
     <script type="text/javascript" src="js/pdfGenerator.js?v=2026-09-29-en"></script>
     <script type="text/javascript" src="js/firebase-config.js?v=2026-09-29-connected"></script>
-    <script type="text/javascript" src="js/script.js?v=2026-09-29-anonymous-auth"></script>
+    <script type="text/javascript" src="js/script.js?v=2026-09-29-draft-autosave"></script>
 </body>
 </html>
