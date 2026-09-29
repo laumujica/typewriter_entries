@@ -8,22 +8,31 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <link rel="stylesheet" href="styles.css?v=2026-09-29-aligned-group" />
+    <link rel="stylesheet" href="styles.css?v=2026-09-29-status-footer" />
 </head>
 <body>
-    <div class="paper">
-        <h2 class="entry-title" contenteditable="true" id="new-title" role="textbox" aria-label="Entry title" data-placeholder="New entry title" data-empty="true"></h2>
-        <div class="typed-text" contenteditable="true" id="new-text" role="textbox" aria-label="Entry text" aria-multiline="true" data-placeholder="Start writing here" data-empty="true"></div>
-        <button class="save-button" type="button">Save entry</button>
-        <p id="save-status" role="status" aria-live="polite"></p>
-    </div>
+    <main class="workspace">
+        <div class="editor-column">
+            <div class="paper">
+                <h2 class="entry-title" contenteditable="true" id="new-title" role="textbox" aria-label="Entry title" data-placeholder="New entry title" data-empty="true"></h2>
+                <div class="typed-text" contenteditable="true" id="new-text" role="textbox" aria-label="Entry text" aria-multiline="true" data-placeholder="Start writing here" data-empty="true"></div>
+                <div class="editor-actions">
+                    <button class="save-button" type="button">Save entry</button>
+                    <p id="save-status" role="status" aria-live="polite"></p>
+                </div>
+            </div>
+            <p class="draft-note">Your draft saves automatically in this browser.</p>
+        </div>
 
-    <aside class="sidebar">
-        <details class="saved-panel" open>
-            <summary class="saved-entries">Saved entries</summary>
-            <ul class="saved-list" id="saved-list"></ul>
-        </details>
-    </aside>
+        <aside class="sidebar">
+            <details class="saved-panel" open>
+                <summary class="saved-entries">Saved entries</summary>
+                <ul class="saved-list" id="saved-list"></ul>
+            </details>
+        </aside>
+    </main>
+
+    <footer class="site-footer">Typewriter Entries MVP · <a href="https://lauramujica.com/"><strong>Laura Mujica</strong></a> · 2023-2026 ⚡</footer>
 
     <div class="modal-overlay">
         <div class="modal" id="txt">
@@ -42,6 +51,6 @@
     <script type="text/javascript" src="js/jspdf.min.js?v=2.5.2"></script>
     <script type="text/javascript" src="js/pdfGenerator.js?v=2026-09-29-en"></script>
     <script type="text/javascript" src="js/firebase-config.js?v=2026-09-29-connected"></script>
-    <script type="text/javascript" src="js/script.js?v=2026-09-29-classic-editor"></script>
+    <script type="text/javascript" src="js/script.js?v=2026-09-29-status-footer"></script>
 </body>
 </html>
