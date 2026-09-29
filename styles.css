@@ -43,8 +43,10 @@ button { font-family: inherit; }
 }
 
 .entry-title {
-  min-height: 2.2rem;
-  margin: 0 0 24px;
+  min-height: 56px;
+  margin: 0 0 22px;
+  padding: 12px 14px;
+  border: 1px solid #777;
   font-size: 1.5rem;
   line-height: 1.4;
   overflow-wrap: anywhere;
@@ -54,6 +56,9 @@ button { font-family: inherit; }
 .typed-text {
   flex: 1;
   min-height: 320px;
+  margin-bottom: 20px;
+  padding: 14px;
+  border: 1px solid #777;
   overflow-wrap: anywhere;
   font-size: 1.5rem;
   line-height: 1.6;
@@ -62,8 +67,8 @@ button { font-family: inherit; }
 
 .entry-title:focus-visible,
 .typed-text:focus-visible {
-  outline: 2px solid #666;
-  outline-offset: 5px;
+  outline: 2px solid #333;
+  outline-offset: 2px;
 }
 
 .save-button,
