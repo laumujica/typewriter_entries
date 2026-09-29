@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "Special Elite";
+  src: url("fonts/SpecialElite-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-display: swap;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -21,6 +28,28 @@ body {
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   margin: 20px;
+}
+
+#save-status {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: #444;
+  line-height: 1.4;
+}
+
+.entry-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #333;
+  font: inherit;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.saved-list {
+  list-style: none;
 }
 
 .entry-title.empty::before {
@@ -164,4 +193,3 @@ li {
     margin-top: 20px; /* Espacio arriba de la lista */
   }
 }
-

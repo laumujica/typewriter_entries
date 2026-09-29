@@ -1,49 +1,68 @@
-function genPDF() {
-  var doc = new jsPDF();
-  let modalTitle = document.querySelector(".modal-title");
-  let modalContent = document.querySelector(".modal-content");
+let fontDataPromise;
 
-  const title = modalTitle.textContent;
-  const content = modalContent.textContent;
+async function getTypewriterFont() {
+  if (!fontDataPromise) {
+    fontDataPromise = fetch("fonts/SpecialElite-Regular.ttf")
+      .then((response) => {
+        if (!response.ok) throw new Error("No se pudo cargar la tipografía");
+        return response.arrayBuffer();
+      })
+      .then((buffer) => {
+        const bytes = new Uint8Array(buffer);
+        let binary = "";
+        for (let offset = 0; offset < bytes.length; offset += 8192) {
+          binary += String.fromCharCode(...bytes.subarray(offset, offset + 8192));
+        }
+        return btoa(binary);
+      })
+      .catch((error) => {
+        fontDataPromise = null;
+        throw error;
+      });
+  }
+  return fontDataPromise;
+}
 
-  // Establecer el ancho máximo del texto en mm
-  const maxWidth = 170; // Deja espacio para márgenes
-  const marginTop = 20; // Margen superior para el contenido
-  const titleHeight = 10; // Altura del título
-  const lineHeight = 10; // Espaciado entre líneas
+async function generatePDF(entry) {
+  const doc = new jspdf.jsPDF({ unit: "mm", format: "a4" });
+  doc.addFileToVFS("SpecialElite-Regular.ttf", await getTypewriterFont());
+  doc.addFont("SpecialElite-Regular.ttf", "SpecialElite", "normal");
+  doc.setFont("SpecialElite", "normal");
 
-  // Título
-  doc.setFont("times", "bold");
-  doc.text(20, 20, title);
+  const margin = 22;
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const textWidth = pageWidth - 2 * margin;
+  const date = new Date();
+  const dateLabel = date.toLocaleDateString("es-AR", { year: "numeric", month: "long", day: "numeric" });
 
-  // Contenido
-  doc.setFont("times", "normal");
-  const splitContent = doc.splitTextToSize(content, maxWidth);
-  
-  let y = marginTop + titleHeight; // Posición inicial para el contenido
+  doc.setFontSize(18);
+  let y = margin + 4;
+  for (const line of doc.splitTextToSize(entry.title, textWidth)) {
+    doc.text(line, margin, y);
+    y += 9;
+  }
+  doc.setFontSize(10);
+  doc.text(dateLabel, margin, y + 2);
+  y += 17;
+  doc.setFontSize(12);
 
-  splitContent.forEach((line) => {
-    // Verificar si se necesita una nueva página
-    if (y + lineHeight > doc.internal.pageSize.height) {
-      doc.addPage(); // Añadir nueva página
-      y = marginTop; // Reiniciar la posición Y
+  for (const paragraph of entry.content.split(/\r?\n/)) {
+    const lines = paragraph ? doc.splitTextToSize(paragraph, textWidth) : [""];
+    for (const line of lines) {
+      if (y > pageHeight - margin) {
+        doc.addPage();
+        doc.setFont("SpecialElite", "normal");
+        doc.setFontSize(12);
+        y = margin + 4;
+      }
+      if (line) doc.text(line, margin, y);
+      y += 7;
     }
-    doc.text(20, y, line);
-    y += lineHeight; // Mover hacia abajo para la próxima línea
-  });
+  }
 
-  // Obtener la fecha actual en formato ddmmaa
-  const currentDate = new Date();
-  const formattedDate =
-    ("0" + currentDate.getDate()).slice(-2) +
-    ("0" + (currentDate.getMonth() + 1)).slice(-2) +
-    currentDate.getFullYear().toString().slice(-2) +
-    "_" +
-    ("0" + currentDate.getHours()).slice(-2) +
-    ("0" + currentDate.getMinutes()).slice(-2);
-  
-  const fileName = `Nueva_entrada_${formattedDate}.pdf`;
-
-  // Guardar el PDF con la fecha formateada en el nombre del archivo
-  doc.save(fileName);
+  const safeTitle = entry.title.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9_-]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 70) || "entrada";
+  const stamp = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  doc.save(`${safeTitle}_${stamp}.pdf`);
 }
