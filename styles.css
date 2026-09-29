@@ -121,7 +121,7 @@ button:disabled { opacity: 0.6; cursor: wait; }
 }
 
 .draft-note { margin: 12px 0 0; font-size: 0.8rem; line-height: 1.4; }
-.site-footer { margin-top: 20px; font-size: 0.78rem; line-height: 1.5; text-align: center; }
+.site-footer { margin-top: 20px; font-family: Arial, sans-serif; font-size: 0.78rem; line-height: 1.5; text-align: center; }
 .site-footer a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .site-footer a:hover { color: #111; }
 .site-footer a:focus-visible { outline: 2px solid #222; outline-offset: 3px; }
