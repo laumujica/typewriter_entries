@@ -7,7 +7,7 @@ Typewriter Entries is a small writing tool I started on **August 11, 2023**. It 
 ## The experience
 
 1. Write a title and a text.
-2. Save the entry and open it from **Entradas Guardadas**.
+2. Save the entry and open it from **Saved entries**.
 3. Download an A4 PDF named after the title and dated on the day of export. The PDF embeds the same Special Elite typeface used by the editor.
 
 This is an experimental MVP, not a commercial product. I return to it as I learn more about product design, focused writing, and editorial workflows. A possible next export format is Word, so a draft can move into a more flexible editing stage.

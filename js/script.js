@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const saveButton = document.querySelector(".save-button");
   const overlay = document.querySelector(".modal-overlay");
   const localKey = "typewriter-entries-v1";
-  const placeholders = [[titleField, "Nueva entrada"], [textField, "Escriba su texto aquí"]];
+  const placeholders = [[titleField, "New entry"], [textField, "Start writing here"]];
   let localEntries = {};
   let remoteEntries = {};
   let entriesRef;
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   try {
     localEntries = JSON.parse(localStorage.getItem(localKey) || "{}") || {};
   } catch (error) {
-    console.warn("No se pudieron recuperar las entradas locales", error);
+    console.warn("Could not recover local entries", error);
   }
 
   const setStatus = (message) => { status.textContent = message; };
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
       localEntries[id] = entry;
       return true;
     } catch (error) {
-      console.error("No se pudo guardar en este navegador", error);
+      console.error("Could not save in this browser", error);
       return false;
     }
   }
@@ -60,8 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
   async function saveEntry() {
     const title = titleField.innerText.trim();
     const content = textField.innerText.trim();
-    if (!title || !content || title === "Nueva entrada" || content === "Escriba su texto aquí") {
-      setStatus("Escribí un título y un texto antes de guardar.");
+    if (!title || !content || title === "New entry" || content === "Start writing here") {
+      setStatus("Write a title and some text before saving.");
       return;
     }
     saveButton.disabled = true;
@@ -71,26 +71,26 @@ document.addEventListener("DOMContentLoaded", () => {
       if (cloudAvailable && entriesRef) {
         await entriesRef.child(id).set(entry);
         saveLocal(id, entry);
-        setStatus("Entrada guardada en Firebase y en este navegador.");
+        setStatus("Entry saved to Firebase and this browser.");
       } else if (saveLocal(id, entry)) {
-        setStatus("Firebase no está disponible. Entrada guardada solo en este navegador.");
+        setStatus("Firebase is unavailable. Entry saved only in this browser.");
       } else {
-        setStatus("No se pudo guardar. Copiá el texto antes de cerrar la página.");
+        setStatus("Could not save. Copy your text before closing this page.");
         return;
       }
       renderEntries();
-      titleField.textContent = "Nueva entrada";
-      textField.textContent = "Escriba su texto aquí";
+      titleField.textContent = "New entry";
+      textField.textContent = "Start writing here";
     } catch (error) {
-      console.error("Error al guardar en Firebase", error);
+      console.error("Could not save to Firebase", error);
       cloudAvailable = false;
       if (saveLocal(id, entry)) {
         renderEntries();
-        titleField.textContent = "Nueva entrada";
-        textField.textContent = "Escriba su texto aquí";
-        setStatus("Firebase no está disponible. Entrada guardada solo en este navegador.");
+        titleField.textContent = "New entry";
+        textField.textContent = "Start writing here";
+        setStatus("Firebase is unavailable. Entry saved only in this browser.");
       } else {
-        setStatus("No se pudo guardar. Copiá el texto antes de cerrar la página.");
+        setStatus("Could not save. Copy your text before closing this page.");
       }
     } finally {
       saveButton.disabled = false;
@@ -102,7 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector(".modal-title").textContent = entry.title;
     document.querySelector(".modal-content").textContent = entry.content;
     document.querySelector(".modal-creation-date").textContent = entry.createdAt
-      ? new Date(entry.createdAt).toLocaleDateString("es-AR") : "";
+      ? new Date(entry.createdAt).toLocaleDateString("en-US") : "";
+    document.getElementById("pdf-status").textContent = "";
     overlay.style.display = "block";
     document.querySelector(".modal-close").focus();
   }
@@ -120,19 +121,23 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   document.querySelector(".pdf-button").addEventListener("click", async () => {
     if (!selectedEntry) return;
+    const pdfButton = document.querySelector(".pdf-button");
+    pdfButton.disabled = true;
     try {
       await generatePDF(selectedEntry);
     } catch (error) {
-      console.error("No se pudo generar el PDF", error);
-      setStatus("No se pudo generar el PDF. Intentá de nuevo.");
+      console.error("Could not generate the PDF", error);
+      document.getElementById("pdf-status").textContent = "Could not generate the PDF. Please try again.";
+    } finally {
+      pdfButton.disabled = false;
     }
   });
 
   renderEntries();
-  setStatus("Conectando con Firebase… Las entradas locales están disponibles.");
+  setStatus("Connecting to Firebase… Local entries are available.");
   setTimeout(() => {
     if (!cloudAvailable) {
-      setStatus("Firebase no está disponible. Las entradas se guardan solo en este navegador.");
+      setStatus("Firebase is unavailable. Entries are saved only in this browser.");
     }
   }, 6000);
   try {
@@ -150,14 +155,14 @@ document.addEventListener("DOMContentLoaded", () => {
       remoteEntries = snapshot.val() || {};
       cloudAvailable = true;
       renderEntries();
-      setStatus("Firebase conectado. Las entradas también se guardan en este navegador.");
+      setStatus("Firebase connected. Entries are also saved in this browser.");
     }, (error) => {
       cloudAvailable = false;
-      console.warn("Firebase no está disponible", error);
-      setStatus("Firebase no está disponible. Las entradas se guardan solo en este navegador.");
+      console.warn("Firebase is unavailable", error);
+      setStatus("Firebase is unavailable. Entries are saved only in this browser.");
     });
   } catch (error) {
-    console.warn("No se pudo iniciar Firebase", error);
-    setStatus("Firebase no está disponible. Las entradas se guardan solo en este navegador.");
+    console.warn("Could not initialize Firebase", error);
+    setStatus("Firebase is unavailable. Entries are saved only in this browser.");
   }
 });

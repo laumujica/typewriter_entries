@@ -4,7 +4,7 @@ async function getTypewriterFont() {
   if (!fontDataPromise) {
     fontDataPromise = fetch("fonts/SpecialElite-Regular.ttf")
       .then((response) => {
-        if (!response.ok) throw new Error("No se pudo cargar la tipografía");
+        if (!response.ok) throw new Error("Could not load the typeface");
         return response.arrayBuffer();
       })
       .then((buffer) => {
@@ -34,7 +34,7 @@ async function generatePDF(entry) {
   const pageHeight = doc.internal.pageSize.getHeight();
   const textWidth = pageWidth - 2 * margin;
   const date = new Date();
-  const dateLabel = date.toLocaleDateString("es-AR", { year: "numeric", month: "long", day: "numeric" });
+  const dateLabel = date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 
   doc.setFontSize(18);
   let y = margin + 4;
@@ -62,7 +62,7 @@ async function generatePDF(entry) {
   }
 
   const safeTitle = entry.title.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-zA-Z0-9_-]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 70) || "entrada";
+    .replace(/[^a-zA-Z0-9_-]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 70) || "entry";
   const stamp = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
   doc.save(`${safeTitle}_${stamp}.pdf`);
 }
