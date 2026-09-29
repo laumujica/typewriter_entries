@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     saveButton.disabled = true;
-    const id = `escrito_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const id = `entry_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
     const entry = { title, content, createdAt: new Date().toISOString() };
     try {
       if (cloudAvailable && entriesRef) {
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
         saveLocal(id, entry);
         setStatus("Entry saved to Firebase and this browser.");
       } else if (saveLocal(id, entry)) {
-        setStatus("Firebase is unavailable. Entry saved only in this browser.");
+        setStatus("Cloud storage is not connected. Entry saved only in this browser.");
       } else {
         setStatus("Could not save. Copy your text before closing this page.");
         return;
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderEntries();
         titleField.textContent = "New entry";
         textField.textContent = "Start writing here";
-        setStatus("Firebase is unavailable. Entry saved only in this browser.");
+        setStatus("Cloud storage is unavailable. Entry saved only in this browser.");
       } else {
         setStatus("Could not save. Copy your text before closing this page.");
       }
@@ -134,6 +134,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   renderEntries();
+  const firebaseConfig = window.TYPEWRITER_FIREBASE_CONFIG;
+  if (!firebaseConfig || !firebaseConfig.apiKey || !firebaseConfig.projectId || !firebaseConfig.databaseURL) {
+    setStatus("Cloud storage is not connected. Entries are saved only in this browser.");
+    return;
+  }
   setStatus("Connecting to Firebase… Local entries are available.");
   setTimeout(() => {
     if (!cloudAvailable) {
@@ -141,16 +146,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, 6000);
   try {
-    firebase.initializeApp({
-      apiKey: "AIzaSyCX6yqmOzw34lvST1DjWjCV3D0yUxFJHbg",
-      authDomain: "typewriter-entries.firebaseapp.com",
-      databaseURL: "https://typewriter-entries-default-rtdb.firebaseio.com",
-      projectId: "typewriter-entries",
-      storageBucket: "typewriter-entries.appspot.com",
-      messagingSenderId: "658456453344",
-      appId: "1:658456453344:web:2bc32cd9c9cd204048f085"
-    });
-    entriesRef = firebase.database().ref("entradas");
+    firebase.initializeApp(firebaseConfig);
+    entriesRef = firebase.database().ref("entries");
     entriesRef.on("value", (snapshot) => {
       remoteEntries = snapshot.val() || {};
       cloudAvailable = true;

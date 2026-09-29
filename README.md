@@ -16,18 +16,19 @@ This is an experimental MVP, not a commercial product. I return to it as I learn
 
 I designed the writing flow and visual direction, then built the interface in HTML, CSS, and JavaScript. The first version connected to Firebase Realtime Database and generated downloadable PDFs in the browser with jsPDF. In 2026 I revisited the implementation to restore the save and export flow, preserve the original project history, and make the storage state visible to writers.
 
-The app is hosted as a static site on GitHub Pages. It does not have accounts. When Firebase is unavailable, entries are saved in this browser's local storage and are **not synced to other devices**. The app states which storage is in use. Entries saved locally remain local when Firebase comes back; automatic synchronization is not implemented.
+The app is hosted as a static site on GitHub Pages. It does not currently have accounts. Entries are saved in this browser's local storage and are **not synced to other devices**. The app states which storage is in use. Entries saved locally remain local if cloud storage is added; automatic synchronization is not implemented.
 
 ## Current technical status
 
-The Firebase configuration committed in this repository points to the **`typewriter-entries`** project and its `entradas` path. On September 29, 2026, that Realtime Database returned **“has been deactivated.”** The separate project ID `maquina-escribir-7b053` was mentioned in the original project notes, but the repository does not point to it; its default Realtime Database endpoint also returned “has been deactivated.” We should identify the correct project and inspect its existing data before changing configuration or database rules.
+The original Firebase Realtime Database was deactivated. Historical entries are not being migrated. The site now runs locally in the browser and no longer contacts the old project. A fresh Firebase project can be attached without changing the GitHub Pages hosting.
 
-The browser-only fallback keeps new writing, the saved list, and PDF export usable while the Firebase project is recovered. Local storage is specific to each browser and can be removed by clearing site data. Do not rely on it as the sole copy of irreplaceable writing; download a PDF.
+To connect a new project, create a Firebase Web app and Realtime Database, then replace `null` in `js/firebase-config.js` with its Web app configuration including `databaseURL`. The new data path is `entries`. Define access rules appropriate for personal writing before enabling cloud storage; the Web app configuration is public and does not protect the data. Local storage is specific to each browser and can be removed by clearing site data. Do not rely on it as the sole copy of irreplaceable writing; download a PDF.
 
 ## Project files
 
 - `index.html`, `styles.css`: writing interface and responsive layout.
-- `js/script.js`: editor behavior, entry list, Firebase connection, and local fallback.
+- `js/script.js`: editor behavior, entry list, local storage, and optional Firebase connection.
+- `js/firebase-config.js`: placeholder for the new project's public Web app configuration.
 - `js/pdfGenerator.js`: dated, multipage A4 PDF export.
 - `fonts/`: bundled Special Elite font and its Apache 2.0 license. The bundled jsPDF 2.5.2 has its MIT license in `js/jspdf-LICENSE.txt`.
 - [Original 2023 process log](docs/archive/README-2023.md): preserved verbatim, including its own note that some dates are incorrect.
