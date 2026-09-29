@@ -12,7 +12,8 @@ body {
   display: grid;
   grid-template-columns: minmax(0, 900px) minmax(220px, 260px);
   justify-content: center;
-  align-items: center;
+  align-content: safe center;
+  align-items: start;
   gap: clamp(20px, 3vw, 44px);
   width: 100%;
   max-width: 1400px;
