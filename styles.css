@@ -9,6 +9,18 @@
 html { background: #888; }
 
 body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1400px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: clamp(16px, 3vw, 40px);
+  color: #222;
+  font-family: "Special Elite", cursive;
+}
+
+.workspace {
   display: grid;
   grid-template-columns: minmax(0, 900px) minmax(220px, 260px);
   justify-content: center;
@@ -16,15 +28,11 @@ body {
   align-items: start;
   gap: clamp(20px, 3vw, 44px);
   width: 100%;
-  max-width: 1400px;
-  min-height: 100vh;
-  margin: 0 auto;
-  padding: clamp(16px, 3vw, 40px);
-  color: #222;
-  font-family: "Special Elite", cursive;
+  flex: 1;
 }
 
 button { font-family: inherit; }
+.editor-column { min-width: 0; }
 
 .paper {
   display: flex;
@@ -77,7 +85,7 @@ button { font-family: inherit; }
   font-size: 0.95rem;
 }
 
-.save-button { align-self: flex-start; }
+.editor-actions { display: flex; align-items: center; gap: 12px; min-height: 26px; }
 .save-button {
   min-height: 26px;
   padding: 2px 6px;
@@ -93,7 +101,6 @@ button { font-family: inherit; }
 button:focus-visible { outline: 2px solid #222; outline-offset: 3px; }
 button:disabled { opacity: 0.6; cursor: wait; }
 
-#save-status,
 #pdf-status {
   min-height: 1.4em;
   margin: 12px 0 0;
@@ -101,6 +108,23 @@ button:disabled { opacity: 0.6; cursor: wait; }
   font-size: 0.85rem;
   line-height: 1.4;
 }
+
+#save-status { margin: 0; color: #444; font-size: 0.85rem; line-height: 1.4; }
+#save-status.is-transient { animation: status-feedback 3s ease both; }
+@keyframes status-feedback {
+  0% { opacity: 0; transform: translateY(4px); }
+  12%, 80% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-3px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #save-status.is-transient { animation: none; }
+}
+
+.draft-note { margin: 12px 0 0; font-size: 0.8rem; line-height: 1.4; }
+.site-footer { margin-top: 20px; font-size: 0.78rem; line-height: 1.5; text-align: center; }
+.site-footer a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.site-footer a:hover { color: #111; }
+.site-footer a:focus-visible { outline: 2px solid #222; outline-offset: 3px; }
 
 .sidebar {
   position: sticky;
@@ -178,7 +202,8 @@ button:disabled { opacity: 0.6; cursor: wait; }
 .modal-content li { color: #555; }
 
 @media (max-width: 640px) {
-  body { display: block; padding: 16px; }
+  body { padding: 16px; }
+  .workspace { display: block; }
   .paper { min-height: min(680px, 72dvh); }
   .typed-text { min-height: 42dvh; }
   .sidebar {
