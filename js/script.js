@@ -49,6 +49,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   titleField.addEventListener("input", saveDraft);
   textField.addEventListener("input", saveDraft);
+  for (const field of document.querySelectorAll(".editor-field")) {
+    field.addEventListener("click", (event) => {
+      if (event.target === field || event.target.classList.contains("field-label")) {
+        field.querySelector('[contenteditable="true"]').focus();
+      }
+    });
+  }
 
   function saveLocal(id, entry) {
     try {
