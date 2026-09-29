@@ -1,26 +1,38 @@
-# typewriter_entries
+# Typewriter Entries
 
-Process log, the dates are wrong, check that out:
+A quiet place to write. [Try the prototype](https://laumujica.github.io/typewriter_entries/).
 
-| N° | Date          | Topic                                     | Description                                                                                        |
-|----|---------------|-------------------------------------------|----------------------------------------------------------------------------------------------------|
-| 1  | August 3, 2023 | Firebase Setup and Realtime Database      | Setting up Firebase project and Realtime Database. Initializing Firebase in JavaScript code.     |
-| 2  | August 3, 2023 | Displaying Entries from Firebase         | Fetching entries from Firebase and displaying them on the website. Modifying the `displayEntries` function to show the entries. |
-| 3  | August 3, 2023 | Clearing Entry Title and Text            | Adding functionality to clear the entry title and text fields when clicked.                      |
-| 4  | August 3, 2023 | Saving Entries to Firebase               | Implementing the logic to save new entries to Firebase. Creating unique entry IDs using timestamps. |
-| 5  | August 4, 2023 | Modal Display and PDF Generation         | Creating a modal to display entry details. Adding the ability to generate a PDF from the modal content. |
-| 6  | August 4, 2023 | Improving User Experience               | Enhancing user experience by modifying text field behavior. Refining the behavior of entry clearing and display. |
-| 7  | August 5, 2023 | Custom PDF File Naming                  | Customizing the PDF file name with a timestamp.                                                   |
-| 8  | August 6, 2023 | Styling and CSS                         | Integrating CSS to style the website and modal.                                                   |
-| 9  | August 7, 2023 | Additional Features                     | Incorporating additional features, including handling click events and fixing issues.               |
-| 10 | August 7, 2023 | Validation and Error Handling           | Implementing validation to prevent saving entries without content. Adding error handling for better user feedback. |
+Typewriter Entries is a small writing tool I started on **August 11, 2023**. It grew from my interest in writing and in digital products that help people focus on one task. The screen has a title, a large writing area, and a short list of saved entries. There are no controls for fonts, sizes, or layout: editing can happen later, after the writing is done.
 
-What I want to modify next - Backlog:
-- Modal content: fixed alignment
-- CSS Styling (saved for last)
-- Add Bold text to the title printed on PDF -DONE
-- Generate better buttons
+## The experience
 
-"Para generar el CSS me gustaría hacer unas pruebas de UX y ver ese tipo de cosas antes de arrancar con mejoras de UI"
-Última actualización:
-15.08.23 - 11:43pm
+1. Write a title and a text.
+2. Save the entry and open it from **Entradas Guardadas**.
+3. Download an A4 PDF named after the title and dated on the day of export. The PDF embeds the same Special Elite typeface used by the editor.
+
+This is an experimental MVP, not a commercial product. I return to it as I learn more about product design, focused writing, and editorial workflows. A possible next export format is Word, so a draft can move into a more flexible editing stage.
+
+## What I built and revisited
+
+I designed the writing flow and visual direction, then built the interface in HTML, CSS, and JavaScript. The first version connected to Firebase Realtime Database and generated downloadable PDFs in the browser with jsPDF. In 2026 I revisited the implementation to restore the save and export flow, preserve the original project history, and make the storage state visible to writers.
+
+The app is hosted as a static site on GitHub Pages. It does not have accounts. When Firebase is unavailable, entries are saved in this browser's local storage and are **not synced to other devices**. The app states which storage is in use. Entries saved locally remain local when Firebase comes back; automatic synchronization is not implemented.
+
+## Current technical status
+
+The Firebase configuration committed in this repository points to the **`typewriter-entries`** project and its `entradas` path. On September 29, 2026, that Realtime Database returned **“has been deactivated.”** The separate project ID `maquina-escribir-7b053` was mentioned in the original project notes, but the repository does not point to it; its default Realtime Database endpoint also returned “has been deactivated.” We should identify the correct project and inspect its existing data before changing configuration or database rules.
+
+The browser-only fallback keeps new writing, the saved list, and PDF export usable while the Firebase project is recovered. Local storage is specific to each browser and can be removed by clearing site data. Do not rely on it as the sole copy of irreplaceable writing; download a PDF.
+
+## Project files
+
+- `index.html`, `styles.css`: writing interface and responsive layout.
+- `js/script.js`: editor behavior, entry list, Firebase connection, and local fallback.
+- `js/pdfGenerator.js`: dated, multipage A4 PDF export.
+- `fonts/`: bundled Special Elite font and its Apache 2.0 license. The bundled jsPDF 2.5.2 has its MIT license in `js/jspdf-LICENSE.txt`.
+- [Original 2023 process log](docs/archive/README-2023.md): preserved verbatim, including its own note that some dates are incorrect.
+
+To run locally, serve the repository with a simple HTTP server (for example `python3 -m http.server 8000`) and open `http://localhost:8000`. Opening `index.html` directly as a `file://` URL can prevent the font file from loading for PDF generation.
+
+**Laura Mujica · 2026 ⚡**
+[lauramujica.com](https://lauramujica.com/)
